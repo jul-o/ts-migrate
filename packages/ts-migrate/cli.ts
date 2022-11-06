@@ -21,7 +21,9 @@ import {
   stripTSIgnorePlugin,
   tsIgnorePlugin,
   Plugin,
+// @ts-ignore
 } from 'ts-migrate-plugins';
+// @ts-ignore
 import { migrate, MigrateConfig } from 'ts-migrate-server';
 import init from './commands/init';
 import rename from './commands/rename';
@@ -159,6 +161,7 @@ yargs
             anyAlias,
             anyFunctionAlias,
             shouldUpdateAirbnbImports: true,
+            shouldKeepPropTypes: true,
           })
           .addPlugin(reactClassStatePlugin, { anyAlias })
           .addPlugin(reactClassLifecycleMethodsPlugin, { force: true })
@@ -212,6 +215,7 @@ yargs
       function withChangeTracking(plugin: Plugin<unknown>): Plugin<unknown> {
         return {
           name: plugin.name,
+          //@ts-ignore
           async run(params) {
             const prevText = params.text;
             const nextText = await plugin.run(params);
@@ -225,6 +229,7 @@ yargs
       }
       const eslintFixChangedPlugin: Plugin = {
         name: 'eslint-fix-changed',
+          //@ts-ignore
         async run(params) {
           if (!changedFiles.has(params.fileName)) return undefined;
           if (changedFiles.get(params.fileName) === params.text) return undefined;
